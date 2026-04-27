@@ -34,7 +34,12 @@ export default function Header({ sections, activeSection, onNavigate, progress }
                         );
                     })}
                 </nav>
-                <div className="topbar-credit">Desarrollado por Andres Jaramillo y Diego Carrasquilla</div>
+                <div className="topbar-credit">
+                    Desarrollado por
+                    <span className="credit-names"> Andres Jaramillo</span>
+                    <span className="credit-sep"> &middot; </span>
+                    <span className="credit-names"> Diego Carrasquilla</span>
+                </div>
             </div>
 
             <motion.div className="scroll-progress" style={{ scaleX: progress }} />

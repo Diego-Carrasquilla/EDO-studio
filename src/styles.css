@@ -111,6 +111,18 @@ button,
     white-space: nowrap;
 }
 
+.credit-names {
+    font-weight: 700;
+    color: var(--text-strong);
+    margin-left: 6px;
+    margin-right: 6px;
+    letter-spacing: 0.01em;
+}
+
+.credit-sep {
+    color: #9aa6c5;
+}
+
 .brand {
     display: inline-flex;
     align-items: center;
@@ -1257,6 +1269,19 @@ tbody tr:hover {
     .python-code-shell pre {
         font-size: 0.72rem !important;
         line-height: 1.45 !important;
+    }
+
+    /* Ocultar numeros de linea en pantallas pequenas para ganar espacio */
+    .react-syntax-highlighter-line-number,
+    .react-syntax-highlighter-line-number.react-syntax-highlighter-line-number {
+        display: none !important;
+    }
+
+    /* Mejor wrapping en movil */
+    .python-code-shell pre, .python-code-shell code {
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
     }
 
     .main-content {
