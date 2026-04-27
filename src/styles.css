@@ -103,6 +103,14 @@ button,
     gap: 18px;
 }
 
+.topbar-credit {
+    font-size: 0.82rem;
+    color: var(--text-body);
+    opacity: 0.95;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
 .brand {
     display: inline-flex;
     align-items: center;
@@ -701,11 +709,13 @@ button,
 .python-code-shell {
     border-radius: 10px;
     overflow: auto;
+    max-width: 100%;
 }
 
 .python-code-shell pre {
     margin: 0;
-    min-width: 640px;
+    min-width: 0;
+    width: 100%;
 }
 
 .control-grid {
@@ -1242,6 +1252,11 @@ tbody tr:hover {
 
     .chart-wrap {
         height: 290px;
+    }
+
+    .python-code-shell pre {
+        font-size: 0.72rem !important;
+        line-height: 1.45 !important;
     }
 
     .main-content {

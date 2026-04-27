@@ -34,6 +34,7 @@ export default function Header({ sections, activeSection, onNavigate, progress }
                         );
                     })}
                 </nav>
+                <div className="topbar-credit">Desarrollado por Andres Jaramillo y Diego Carrasquilla</div>
             </div>
 
             <motion.div className="scroll-progress" style={{ scaleX: progress }} />
