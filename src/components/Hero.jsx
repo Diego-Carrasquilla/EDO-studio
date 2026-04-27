@@ -16,14 +16,7 @@ export default function Hero({ onExplore }) {
             />
 
             <div className="hero-panel">
-                <motion.span
-                    className="hero-badge"
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55 }}
-                >
-                    <Sparkles size={14} /> Presentacion interactiva profesional
-                </motion.span>
+                {/* badge removed as requested */}
 
                 <motion.h1
                     className="hero-title"
@@ -31,7 +24,7 @@ export default function Hero({ onExplore }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.1 }}
                 >
-                    Metodos Numericos + Epidemiologia SIR
+                    Métodos numéricos y modelado epidemiológico SIR
                 </motion.h1>
 
                 <motion.p
@@ -40,9 +33,8 @@ export default function Hero({ onExplore }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.2 }}
                 >
-                    Una sola pagina, una sola narrativa: primero entiendes la teoria,
-                    luego experimentas con simulacion numerica y finalmente llevas todo a
-                    un caso epidemiologico real con RK4.
+                    Aprende la teoría, explora simulaciones numéricas en tiempo real y
+                    aplica lo aprendido a un caso epidemiológico real usando RK4.
                 </motion.p>
 
                 <motion.div
@@ -52,9 +44,9 @@ export default function Hero({ onExplore }) {
                     transition={{ duration: 0.6, delay: 0.35 }}
                 >
                     <button type="button" className="btn-primary" onClick={onExplore}>
-                        Explorar presentacion <ArrowRight size={16} />
+                        Explorar presentación <ArrowRight size={16} />
                     </button>
-                    <span className="hero-caption">React + Framer Motion + Recharts</span>
+                    <span className="hero-caption">React · Framer Motion · Recharts</span>
                 </motion.div>
             </div>
         </section>
