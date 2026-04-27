@@ -1,0 +1,332 @@
+DOCUMENTO DE LECTURA
+Analisis completo de Metodo de Euler, Runge-Kutta 4 y su uso en el ejemplo epidemiologico SIR
+
+============================================================
+1) Objetivo de este documento
+============================================================
+
+Este texto esta pensado para lectura en presentacion. Su objetivo es explicar de forma clara y profunda:
+
+- Como funciona el Metodo de Euler.
+- Como funciona el Metodo de Runge-Kutta de cuarto orden (RK4).
+- Por que ambos metodos se comparan en el simulador.
+- Como usamos RK4 para analizar el ejemplo epidemiologico SIR.
+- Como interpretar los resultados para convertir numeros en conclusiones.
+
+En pocas palabras: no solo resolvemos ecuaciones, sino que construimos criterio para entender cuando confiar en un resultado numerico.
+
+
+============================================================
+2) Punto de partida: que problema estamos resolviendo
+============================================================
+
+Trabajamos con ecuaciones diferenciales ordinarias (EDO). Una EDO describe como cambia una variable en funcion de otra.
+
+Forma general:
+
+dy/dx = f(x, y), con condicion inicial y(x0) = y0.
+
+En teoria, si encontramos una formula exacta y = g(x), ya esta resuelto.
+En la practica, la mayoria de problemas reales no tienen solucion cerrada facil, sobre todo cuando son no lineales o sistemas acoplados.
+
+Por eso usamos metodos numericos:
+
+- Dividimos el eje x en pasos pequenos de tamano h.
+- Calculamos aproximaciones sucesivas y0, y1, y2, ...
+- Construimos una trayectoria numerica que aproxima la solucion real.
+
+
+============================================================
+3) Metodo de Euler: idea, mecanismo y limites
+============================================================
+
+3.1 Idea central
+
+Euler usa una sola pendiente por paso: la pendiente local en el punto actual.
+
+Si estamos en (xi, yi), y conocemos la pendiente f(xi, yi), entonces avanzamos una distancia h como si la curva fuera una linea recta en ese tramo.
+
+Formula de avance:
+
+yi+1 = yi + h * f(xi, yi)
+
+
+3.2 Intuicion geometrica
+
+Euler "proyecta" la tangente local hacia adelante.
+
+- Si la curva real cambia poco en ese intervalo, la aproximacion es buena.
+- Si la curva se dobla fuerte, la tangente deja de representar bien el comportamiento real.
+
+En otras palabras: Euler es rapido, pero sensible al tamano de paso y a la curvatura del problema.
+
+
+3.3 Como lo explicamos en la presentacion
+
+En la parte teorica lo mostramos como pipeline de 4 ideas:
+
+1. Partir de condicion inicial.
+2. Medir una pendiente local.
+3. Avanzar con yi+1 = yi + h*pendiente.
+4. Repetir.
+
+Esto hace que cualquier persona entienda que Euler no "adivina" la curva completa, sino que la construye paso a paso con informacion local.
+
+
+3.4 Precision y error
+
+Resultados clasicos de error:
+
+- Error local por paso: O(h^2)
+- Error global acumulado: O(h)
+
+Lectura practica:
+
+- Si reduces h a la mitad, el error global se reduce aproximadamente a la mitad.
+- Para problemas exigentes, puede requerir pasos muy pequenos para ser confiable.
+
+
+3.5 Cuando Euler si conviene
+
+- Introduccion didactica.
+- Pruebas rapidas y prototipos simples.
+- Cuando el costo computacional debe ser minimo y la precision no es critica.
+
+
+============================================================
+4) Metodo RK4: idea, mecanismo y fortaleza
+============================================================
+
+4.1 Idea central
+
+RK4 corrige el principal limite de Euler: no se queda con una sola pendiente.
+Usa cuatro pendientes dentro del mismo paso y luego las combina con pesos.
+
+Pendientes intermedias:
+
+k1 = f(xi, yi)
+k2 = f(xi + h/2, yi + h*k1/2)
+k3 = f(xi + h/2, yi + h*k2/2)
+k4 = f(xi + h, yi + h*k3)
+
+Actualizacion:
+
+yi+1 = yi + (h/6)*(k1 + 2k2 + 2k3 + k4)
+
+
+4.2 Intuicion geometrica
+
+RK4 "explora" inicio, medio y final del paso. No avanza ciego.
+
+- k1: pendiente de salida.
+- k2 y k3: pendientes de control en la mitad.
+- k4: pendiente de llegada.
+
+El promedio ponderado 1-2-2-1 logra una aproximacion mucho mas fiel de la curva real.
+
+
+4.3 Como lo explicamos en la presentacion
+
+En el bloque teorico lo presentamos como pipeline:
+
+1. k1 en el inicio.
+2. k2 y k3 en puntos medios (corregidos).
+3. k4 en el final.
+4. Combinacion ponderada para obtener yi+1.
+
+Asi queda claro que RK4 no es "magia": es una estrategia sistematica de muestreo de pendientes.
+
+
+4.4 Precision y error
+
+Resultados clasicos de error:
+
+- Error local por paso: O(h^5)
+- Error global acumulado: O(h^4)
+
+Lectura practica:
+
+- Si reduces h a la mitad, el error global cae aproximadamente por un factor de 16.
+- Con pasos moderados, RK4 suele dar precision alta sin costo excesivo.
+
+
+4.5 Costo computacional
+
+- Euler: 1 evaluacion de f por paso.
+- RK4: 4 evaluaciones de f por paso.
+
+Pagas mas calculo por paso, pero normalmente necesitas menos refinamiento extremo para buena precision.
+
+
+============================================================
+5) Comparacion directa: como la vivimos en el simulador
+============================================================
+
+En la seccion de simulador hacemos tres cosas clave:
+
+1) Cambiar ecuacion y tamano de paso h.
+2) Ver curva exacta, curva Euler y curva RK4 en la misma grafica.
+3) Medir con estadisticas y tabla de errores.
+
+Esto convierte la teoria en evidencia visual.
+
+
+5.1 Que lectura hacemos cuando movemos h
+
+- h grande: Euler se separa rapido de la exacta.
+- h pequeno: Euler mejora, pero puede requerir muchos pasos.
+- RK4 mantiene buena cercania incluso con h relativamente mayor.
+
+
+5.2 Desglose del primer paso
+
+El simulador no solo muestra resultado final; tambien desglosa el primer paso:
+
+- Euler: pendiente unica y valor y1.
+- RK4: k1, k2, k3, k4, luego y1.
+
+Ese bloque es didacticamente clave porque hace transparente el "como", no solo el "cuanto".
+
+
+5.3 Catalogo ampliado de ecuaciones
+
+La simulacion incluye distintos tipos de dinamica:
+
+- Exponencial.
+- Trigonometrica.
+- Logistica no lineal.
+- Decaimiento.
+- Lineales forzadas y estables.
+- Polinomial.
+- Oscilacion amortiguada.
+- Modelo logaritmico.
+
+Cada una exige una lectura distinta y fortalece la comprension del metodo.
+
+
+============================================================
+6) Como conectar esta teoria con el ejemplo epidemiologico
+============================================================
+
+6.1 El salto conceptual
+
+Pasamos de una sola EDO a un sistema acoplado:
+
+SIR separa la poblacion en:
+
+- S: susceptibles.
+- I: infectados.
+- R: recuperados.
+
+Sistema:
+
+dS/dt = -beta*S*I/N
+dI/dt = beta*S*I/N - gamma*I
+dR/dt = gamma*I
+
+Aqui cada ecuacion depende de otras variables. No hay independencia entre curvas.
+
+
+6.2 Por que RK4 es tan natural en SIR
+
+En cada paso temporal, RK4 evalua pendientes para S, I y R de forma conjunta.
+No calcula una variable aislada; integra el sistema como unidad dinamica.
+
+Por eso funciona tan bien en escenarios epidemiologicos:
+
+- Captura no linealidad (termino S*I).
+- Maneja mejor cambios rapidos de pendiente.
+- Reduce error acumulado en horizontes de tiempo largos.
+
+
+6.3 Papel de Euler en este contexto
+
+Euler sigue siendo util para entender la mecanica basica, pero en SIR puede:
+
+- amplificar error con pasos grandes,
+- desplazar pico temporal,
+- distorsionar magnitud de infectados.
+
+Para analisis serio, RK4 da mayor confianza en tendencias y decisiones.
+
+
+============================================================
+7) Como analizamos epidemiologia en la presentacion
+============================================================
+
+La seccion SIR no se queda en "ver curvas". Se organiza como flujo de analisis en 4 pasos.
+
+
+7.1 Paso 1: Riesgo de expansion
+
+Indicador: R0 = beta/gamma
+
+- R0 > 1: la epidemia tiende a crecer.
+- R0 < 1: tiende a apagarse.
+
+Este es el filtro inicial de riesgo.
+
+
+7.2 Paso 2: Velocidad inicial
+
+Indicadores:
+
+- Tasa de crecimiento inicial.
+- Tiempo de duplicacion.
+
+Esto responde: que tan rapido empeora al inicio.
+No es lo mismo crecer lento que duplicar en pocos dias.
+
+
+7.3 Paso 3: Presion maxima
+
+Indicadores:
+
+- Dia del pico.
+- Porcentaje maximo de infectados.
+- Re efectivo en el pico.
+
+Aqui evaluamos saturacion potencial y momento critico operativo.
+
+
+7.4 Paso 4: Duracion e impacto total
+
+Indicadores:
+
+- Ventana critica (tiempo con incidencia alta).
+- Fraccion total afectada al final.
+
+Esto traduce la simulacion a impacto acumulado sobre poblacion y sistema.
+
+
+============================================================
+8) Mensaje final para lectura de cierre
+============================================================
+
+Euler y RK4 resuelven el mismo problema, pero no con la misma filosofia:
+
+- Euler privilegia simplicidad y velocidad local.
+- RK4 privilegia precision y estabilidad global.
+
+En la practica, Euler es excelente para aprender y construir intuicion.
+Para decisiones tecnicas o analisis de escenarios reales, RK4 suele ser la opcion recomendada.
+
+El ejemplo SIR demuestra por que esto importa:
+cuando el sistema es no lineal y acoplado, la calidad del metodo numerico cambia la calidad de la conclusion.
+
+En resumen:
+
+- Entender el metodo importa tanto como ver la grafica.
+- Ajustar h es parte del analisis, no un detalle menor.
+- Interpretar metricas epidemiologicas convierte matematicas en criterio de decision.
+
+Ese es el valor central de esta presentacion: aprender a simular, pero tambien aprender a leer y defender lo que la simulacion dice.
+
+
+============================================================
+9) Mini guion oral (opcional)
+============================================================
+
+Si quieres leer una version corta frente a audiencia:
+
+"Primero resolvemos EDO con Euler: una pendiente por paso. Es simple, pero su error global crece de forma lineal con h. Luego usamos RK4: cuatro pendientes ponderadas por paso. Eso mejora mucho la precision y la estabilidad. En el simulador lo vemos de inmediato al comparar curva exacta, Euler y RK4, y al revisar los errores numericos paso a paso. Despues llevamos esta logica al modelo SIR, donde las ecuaciones estan acopladas y la no linealidad es fuerte. Con RK4 analizamos riesgo, velocidad inicial, pico y impacto total. Asi la matematica no queda en formula: se convierte en analisis util para interpretar escenarios epidemiologicos de forma robusta."
