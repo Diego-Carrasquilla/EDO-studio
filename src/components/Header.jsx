@@ -5,7 +5,7 @@ export default function Header({ sections, activeSection, onNavigate, progress }
         <header className="topbar">
             <div className="topbar-inner">
                 <div className="brand">
-                    <span className="brand-dot" />
+                    <img src="/wave.svg" alt="edo" className="brand-icon" />
                     <span className="brand-title">edo studio</span>
                 </div>
 

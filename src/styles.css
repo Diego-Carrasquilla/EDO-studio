@@ -129,12 +129,11 @@ button,
     gap: 9px;
 }
 
-.brand-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: linear-gradient(140deg, var(--blue-500), var(--orange-500));
-    box-shadow: 0 0 0 5px rgba(48, 105, 240, 0.15);
+.brand-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(49, 95, 240, 0.12);
 }
 
 .brand-title {
@@ -1278,7 +1277,8 @@ tbody tr:hover {
     }
 
     /* Mejor wrapping en movil */
-    .python-code-shell pre, .python-code-shell code {
+    .python-code-shell pre,
+    .python-code-shell code {
         white-space: pre-wrap !important;
         word-break: break-word !important;
         overflow-wrap: anywhere !important;
