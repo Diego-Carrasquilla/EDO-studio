@@ -111,7 +111,7 @@ EDO/
 
 ## 📝 Licencia
 
-Especifica la licencia de tu proyecto aquí (ej: MIT, Apache 2.0, etc.)
+Acceso publico
 
 ---
 
